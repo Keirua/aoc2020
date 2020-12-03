@@ -1,6 +1,8 @@
 file = open('input/2.txt', 'r') 
 data = [i.strip().split(' ') for i in file.readlines()]
 
+rules = []
+
 count = 0
 for p in data:
 	numbers = [int(i) for i in p[0].split('-')]
