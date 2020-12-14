@@ -6,7 +6,19 @@ file = open('input/14ex.txt', 'r')
 data = [i.strip() for i in file.readlines()]
 
 mask = None
-mem = [0]*36
+mem = {}
+
+def calc_mask(mask, mem_value_binary):
+	output = ""
+	print(mask)
+	print(mem_value_binary)
+	print()
+	for i in range(len(mem_value_binary)):
+		if mask[i] == "X":
+			output = output + mem_value_binary[i]
+		else:
+			output = output + mask[i]
+	return output
 
 for line in data:
 	mask_re = re.findall("mask = (.*)", line)
@@ -16,9 +28,11 @@ for line in data:
 	else:
 		memory_re = re.findall("mem\[(\\d+)\] = (.*)", line)
 		mem_address = int(memory_re[0][0])
-		mem_value_binary = int(memory_re[0][1])
+		mem_value_binary = memory_re[0][1].zfill(36)
 		print(mem_address, mem_value_binary)
-
+		mem[mem_address] = calc_mask(mask, mem_value_binary)
 	
+pp.pprint(mem)
 
-print(sum(mem))
+non_zeros = list(map(lambda x: int(x, 2), mem.values()))
+print(non_zeros)
