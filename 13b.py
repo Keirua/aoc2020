@@ -1,5 +1,6 @@
 import re
 import pprint
+import math
 pp = pprint.PrettyPrinter(indent=4)
 
 file = open('input/13.txt', 'r') 
@@ -7,8 +8,7 @@ data = [i.strip() for i in file.readlines()]
 
 def parse_constraints(l):
 	buses = l.split(',')
-	indices = list(range(len(buses)))
-	return [(int(b) - o, int(b)) for (b, o) in zip(buses, indices) if b != "x"]
+	return [(int(b) - o, int(b)) for (o, b) in enumerate(buses) if b != "x"]
 
 # https://fr.wikipedia.org/wiki/Algorithme_d%27Euclide_%C3%A9tendu#Pseudo-code
 def egcd(a, b):
@@ -25,17 +25,14 @@ def egcd(a, b):
 # https://rosettacode.org/wiki/Chinese_remainder_theorem
 def earliest(shuttle_list):
 	constraints = parse_constraints(shuttle_list)
-	n_hat = 1
 
-	shortest = 0
-	for c in constraints:
-		n_hat *= c[1]
+	n_hat = math.prod(map(lambda x: x[1], constraints))
+	steps = []
 	for r,m in constraints:
 		p = n_hat // m
-		step = r * ((egcd(p, m)[1] % m + m)%m) * p
+		steps.append(r * ((egcd(p, m)[1] % m + m)%m) * p)
 
-		shortest = shortest + step
-	return shortest % n_hat
+	return sum(steps) % n_hat
 
 
 assert(earliest("7,13,x,x,59,x,31,19") == 1068781)
