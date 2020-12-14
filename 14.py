@@ -2,7 +2,7 @@ import re
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
-file = open('input/14ex.txt', 'r') 
+file = open('input/14.txt', 'r') 
 data = [i.strip() for i in file.readlines()]
 
 mask = None
@@ -28,7 +28,8 @@ for line in data:
 	else:
 		memory_re = re.findall("mem\[(\\d+)\] = (.*)", line)
 		mem_address = int(memory_re[0][0])
-		mem_value_binary = memory_re[0][1].zfill(36)
+		mem_int = int(memory_re[0][1])
+		mem_value_binary = "{0:b}".format(mem_int).zfill(36)
 		print(mem_address, mem_value_binary)
 		mem[mem_address] = calc_mask(mask, mem_value_binary)
 	
@@ -36,3 +37,4 @@ pp.pprint(mem)
 
 non_zeros = list(map(lambda x: int(x, 2), mem.values()))
 print(non_zeros)
+print(sum(non_zeros))
