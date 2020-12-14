@@ -7,21 +7,22 @@ adapters = [int(i.strip()) for i in file.readlines()]
 
 builtin_max = max(adapters)+3
 adapters.append(builtin_max)
-
-current = 0
+adapters.append(0)
 
 adapters.sort()
 
-stack = [0]
-nb_valid = 0
-while len(stack) > 0:
-	current = stack.pop()
-	valid_plugs = list(filter(lambda k: current < k <= current + 3, adapters))
-	for v in valid_plugs:
-		if v == builtin_max:
-			nb_valid = nb_valid + 1
-		else:
-			stack.append(v)
+# This comment helped to understand the dynamic solution
+# https://www.reddit.com/r/adventofcode/comments/kacdbl/2020_day_10c_part_2_no_clue_how_to_begin/gf9lzhd/
+paths = {}
+for c in adapters:
+	paths[c] = 0
+paths[0] = 1
 
-print(nb_valid)
+for current in adapters:
+	plugs = [current + 1, current + 2, current + 3]
+	for v in plugs:
+		if v in adapters:
+			paths[v] = paths[v] + paths[current]
+	pp.pprint(paths)
 
+print(paths[builtin_max])
