@@ -24,6 +24,12 @@ def generate_all_addresses(address_with_mask):
 	out = []
 	addresses = [address_with_mask]
 	print(addresses)
+	# starting with the first adress (that may contain Xs):
+	# we find the first X, then we generate 2 new addresses:
+	#  - one with a 0 instead of said X
+	#  - one with a 1
+	# we append these 2, and start over.
+	# When we dont find an X in the address, we add it to the output list
 	while len(addresses) > 0:
 		curr_address = addresses.pop()
 		offset = curr_address.find('X')

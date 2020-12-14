@@ -2,18 +2,11 @@ import re
 file = open('input/8.txt', 'r') 
 data = [i.strip() for i in file.readlines()]
 
-NOP = 0
-ACC = 1
-JMP = 2
-
-
-
 def parse_program(data):
 	instruction_list = []
 	for line in data:
 		parsed = line.split(" ")
-		instruction = parsed[0]
-		amount = int(parsed[1])
+		instruction, amount = parsed[0], int(parsed[1])
 		instruction_list.append((instruction, amount))
 
 	return instruction_list
@@ -23,7 +16,7 @@ def run_program(instruction_list):
 	ip = 0
 	visited = [False] * len(instruction_list)
 
-	while visited[ip] == False:
+	while not visited[ip]:
 		visited[ip] = True
 		(instruction, value) = instruction_list[ip]
 
@@ -37,7 +30,6 @@ def run_program(instruction_list):
 
 	return acc
 
-
 instruction_list = parse_program(data)
-print(instruction_list)
+# print(instruction_list)
 print(run_program(instruction_list))

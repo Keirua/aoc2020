@@ -6,7 +6,12 @@ pp = pprint.PrettyPrinter(indent=4)
 file = open('input/7.txt', 'r') 
 data = [i.strip() for i in file.readlines()]
 
-# The vertices of the graph
+# In part 1, we need to keep track of which bags have other bags as containers
+# In part 2, we need to keep track of which bags (and how many) each bag contains
+
+# our graph: the vertices are bags, and the edges are:
+#  - part1: which bags might contain us
+#  - part2: which bags and how many we contain
 PARENTS = defaultdict(list)  # parents[x] = the bags that contain x
 CONTENTS = defaultdict(list) # contents[x] = the bags contained by x
 
@@ -33,7 +38,9 @@ parse(data)
 # Solution that involves a queue and a set, which are faster than lists
 def bag_count(target):
 	"""
-	In part 1, we need to keep track of which bags have other bags as containers
+	Starting from target, how many bags can we reach by following the edges ?
+	BFS: breadth first search.
+	BFS solves this problem by visiting every vertex reachable from a given vertex.
 	"""
 	SEEN = set()
 	Q = deque([target])
@@ -49,7 +56,8 @@ def bag_count(target):
 
 def size(target):
 	"""
-	In part 2, we need to keep track of which bags (and how many) each bag contains
+	DFS: depth first search
+	DFS visit all the children before visiting the 
 	"""
 	ans = 1
 	for (y, n) in CONTENTS[target]:
