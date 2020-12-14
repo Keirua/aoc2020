@@ -1,7 +1,7 @@
 My solutions to advent of code 2020, in python
 
  - some of the cool problems with a reasonnably clean solutions are:
-   - 7
+   - 7 (the parsing is not very interesting, but the counting part was fun)
    - 8
    - 10b (10b2 has some notes)
    - 13b (solved with chinese remainder theorem, which requires extended gcd)
