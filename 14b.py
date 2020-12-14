@@ -10,9 +10,6 @@ mem = {}
 
 def calc_mask(mask, mem_value_binary):
 	output = ""
-	# print()
-	# print(mem_value_binary)
-	# print(mask)
 	for i in range(len(mem_value_binary)):
 		if mask[i] == "X":
 			output = output + "X"
@@ -54,8 +51,8 @@ for line in data:
 		address_with_mask = calc_mask(mask, mem_address_binary)
 		addresses = generate_all_addresses(address_with_mask)
 		addresses_int = list(map(lambda x: int(x, 2), addresses))
-		pp.pprint(addresses)
-		pp.pprint(addresses_int)
+		# pp.pprint(addresses)
+		# pp.pprint(addresses_int)
 		for a in addresses_int:
 			mem[a] = mem_int
 		

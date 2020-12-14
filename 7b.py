@@ -2,7 +2,7 @@ import re
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
-file = open('input/7ex.txt', 'r') 
+file = open('input/7.txt', 'r') 
 data = [i.strip() for i in file.readlines()]
 
 def parse(data):
@@ -24,22 +24,17 @@ def parse(data):
 	return bags
 
 bags = parse(data)
-pp.pprint(bags)
 
 def bag_count(bags, step, multiplier):
-	nb_child_bags = 0
-	keys = bags[step].keys()
-	if len(keys) == 0:
+	child_bags = bags[step].keys()
+
+	if len(child_bags) == 0:
 		return multiplier
+	else:
+		child_bag_counts = map(lambda c: bag_count(bags, c, multiplier * bags[step][c]), child_bags)
+		return multiplier + sum (child_bag_counts)
 
-	for child in bags[step].keys():
-		bc = bag_count(bags, child, multiplier * bags[step][child])
-		print(bc)
-		nb_child_bags = nb_child_bags + bc
-
-	return nb_child_bags
-
-n = bag_count(bags, "shiny gold", 1)
+n = bag_count(bags, "shiny gold", 1) - 1
 print(n)
 
 
