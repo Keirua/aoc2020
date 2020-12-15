@@ -14,24 +14,20 @@ def nth(l, n):
 	COUNTS = defaultdict(int)
 	for i, x in enumerate(l):
 		COUNTS[x] = 1
-	# print(COUNTS)
-
+	last_value = l[-1]
 	while(pos < n):
-		last_value = l[-1]
-		# print(l)
-		# print(last_value)
 		if COUNTS[last_value] == 1:
-			# print("first time !")
 			l.append(0)
+			last_value = 0
 			COUNTS[0] += 1
 		else:
 			occurences = [i for i, x in enumerate(l) if x == last_value]
-			# print(last_value, occurences, COUNTS)
-			l.append(occurences[-1] - occurences[-2])
-			COUNTS[occurences[-1] - occurences[-2]] += 1
+			last_value = occurences[-1] - occurences[-2]
+
+			l.append(last_value)
+			COUNTS[last_value] += 1
 		pos = pos + 1
-	# 	print()
-	# print(l)
+
 	return l[-1]
 
 assert(nth(parse("0,3,6"), 10) == 0)
