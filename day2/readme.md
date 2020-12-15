@@ -1,0 +1,1 @@
+this is mostly a copy/paste from https://fasterthanli.me/series/advent-of-code-2020/part-2

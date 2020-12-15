@@ -1,11 +1,13 @@
 My solutions to advent of code 2020, in Python
 
-Some of the cool problems with a reasonnably clean solutions are:
+Some of the cool problems with a reasonnably clean solutions, and/or where I have learnt something are:
+ - 2 using a PEG − Parsing expression grammar. Thanks [Fasterthanlime](https://fasterthanli.me/series/advent-of-code-2020/part-2)
  - 7 (the parsing is not very interesting. The counting part was fun, it involves graph traversal using BFS and DFS)
- - 8 (program parsing and running). The first part is straightforward, the 2nd part does add much
+ - 8 (program parsing and running). The first part is straightforward, the 2nd part does not add much
  - 10b (10b2 has some notes, that's dynamic programming)
  - 13b (solved with chinese remainder theorem, which requires extended gcd)
  - 14b (generating every possible bit combinations)
+ - Turns out 15 is the [Van Eck Sequence](https://rosettacode.org/wiki/Van_Eck_sequence). Many went for a brute force solution, which is OK on todays machines (<20s in python).
 
 Some cool links:
  - [the subreddit](reddit.com/r/adventofcode) where the community gathers
@@ -17,3 +19,5 @@ Some cool links:
  - Some [behind the scene](https://www.reddit.com/r/adventofcode/comments/k9lt09/postmortem_2_scaling_adventures/) details on the issues on the first days
  - [Upping the ante](https://www.reddit.com/r/adventofcode/comments/kcybyr/2002_day_14_part_2_but_what_if_the_input_is_harder/) is a category where some extra constraints are added to the problems, like longer inputs that discards bruteforce or new rules
  - [Getting Crafty](https://www.reddit.com/r/adventofcode/wiki/gettincrafty) shows some very creative ideas.
+ - [tourist](https://www.youtube.com/watch?v=97tieEKfvBs) is one of the best competitive programmers. He streams CodeForce problems, and that's… another level entirely.
+ - [cp-algorithms](https://cp-algorithms.com/) which provides A LOT of great information regarding algorithms used for competitive programming.
