@@ -7,6 +7,29 @@ input = "5,2,8,16,18,0,1"
 def parse(input):
 	return [int(i) for i in input.split(",")]
 
+# def nth(l, n):
+# 	pos = len(l)
+# 	COUNTS = defaultdict(int)
+# 	OCC = defaultdict(list)
+# 	for i, x in enumerate(l):
+# 		COUNTS[x] = 1
+# 		OCC[x].append(i)
+
+# 	last_value = l[-1]
+# 	while(pos < n):
+# 		if COUNTS[last_value] == 1:
+# 			last_value = 0
+# 			COUNTS[0] += 1
+# 			OCC[0].append(pos)
+# 		else:
+# 			last_value = OCC[last_value][-1] - OCC[last_value][-2]
+# 			OCC[last_value].append(pos)
+
+# 			COUNTS[last_value] += 1
+# 		pos = pos + 1
+
+# 	return last_value
+
 def nth(l, n):
 	pos = len(l)
 	while(pos < n):
