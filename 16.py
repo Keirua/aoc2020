@@ -2,7 +2,7 @@ import re
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
-file = open('input/16ex.txt', 'r') 
+file = open('input/16.txt', 'r') 
 lines = [i.strip() for i in file.readlines()]
 
 def parse_numbers(line, s=","):
@@ -45,7 +45,28 @@ def parse(lines):
 
 rules, mine, others = parse(lines)
 
+def is_valid(value, condition):
+	return (value >= condition[0][0] and value <= condition[0][1]) or (value >= condition[1][0] and value <= condition[1][1])
+
+def any_condition_match(v, conditions):
+    for c in conditions:
+        if is_valid(v, c):
+            return True
+    return False
+
+def part1(rules, others):
+	conditions = rules.values()
+	invalid_values = []
+	for ticket in others:
+		for v in ticket:
+			if not any_condition_match(v, conditions):
+				invalid_values.append(v)
+	return sum(invalid_values)
+
+
 pp.pprint(lines)
 print(rules)
 print("mine", mine)
 print("others", others)
+
+print(part1(rules, others))
