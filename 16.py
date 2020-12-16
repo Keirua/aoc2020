@@ -88,27 +88,36 @@ def extract_possible_positions(rules, valid_tickets):
 				possible_positions[k].append(p)
 	return possible_positions
 
+def extract_positions_from(possible_positions):
+	# find the final positions through constraint propagation
+	positions = {}
+	categories = possible_positions.keys()
+	for i in range(len(categories)):
+		remain1 = list(filter(lambda k: len(possible_positions[k]) == 1, categories))
+		for r in remain1:
+			actual_position = possible_positions[r][0]
+			positions[r] = actual_position
+			for c in categories:
+				if actual_position in possible_positions[c]:
+					possible_positions[c].remove(actual_position)
+	return positions
+
 def part2(rules, mine, others):
 	conditions = rules.values()
 	valid_tickets = filter_valid_tickets(conditions, others)
 	valid_tickets.append(mine)
 	
 	possible_positions = extract_possible_positions(rules, valid_tickets)
+	positions = extract_positions_from(possible_positions)
 
-	# total = []
-	# for f in found:
-	# 	if f.startswith("departure"):
-	# 		print(f)
-			# total.append(mine[positions[f]])
+	pp.pprint(positions)
+	total = 1
+	for k in positions.keys():
+		if k.startswith("departure"):
+			total *= mine[positions[k]]
 
-	pp.pprint(possible_positions)
-	# print(total)
+	return total
 
-
-# pp.pprint(lines)
-# print(rules)
-# print("mine", mine)
-# print("others", others)
 
 print(part1(rules, others))
-part2(rules, mine, others)
+print(part2(rules, mine, others))
