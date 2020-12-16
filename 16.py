@@ -74,10 +74,23 @@ def filter_valid_tickets(conditions, others):
 			valid_tickets.append(ticket)
 	return valid_tickets
 
+def condition_match_every_tickets(condition, p, tickets):
+	for ticket in tickets:
+		if not is_valid(ticket[p], condition):
+			return False
+	return True
+
 def part2(rules, mine, others):
 	conditions = rules.values()
 	valid_tickets = filter_valid_tickets(conditions, others)
+	valid_tickets.append(mine)
+	positions = []
+
+	# for p in range(len(mine)):
+
 	print(valid_tickets)
+
+
 
 
 pp.pprint(lines)
