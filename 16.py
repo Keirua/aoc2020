@@ -2,7 +2,7 @@ import re
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
-file = open('input/16ex.txt', 'r') 
+file = open('input/16.txt', 'r') 
 lines = [i.strip() for i in file.readlines()]
 
 def parse_numbers(line, s=","):
@@ -92,8 +92,14 @@ def part2(rules, mine, others):
 				if condition_match_every_tickets(r, p, valid_tickets):
 					positions.append(k)
 
+	total = 1
+	for i, v in enumerate(positions):
+		if v.find("departure") > -1:
+			total *= mine[i]
+
 	print(valid_tickets)
 	print(positions)
+	print(total)
 
 
 
