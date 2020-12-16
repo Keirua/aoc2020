@@ -2,7 +2,7 @@ import re
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
-file = open('input/16.txt', 'r') 
+file = open('input/16ex.txt', 'r') 
 lines = [i.strip() for i in file.readlines()]
 
 def parse_numbers(line, s=","):
@@ -63,6 +63,22 @@ def part1(rules, others):
 				invalid_values.append(v)
 	return sum(invalid_values)
 
+def filter_valid_tickets(conditions, others):
+	valid_tickets = []
+	for ticket in others:
+		valid = True
+		for v in ticket:
+			if not any_condition_match(v, conditions):
+				valid = False
+		if valid:
+			valid_tickets.append(ticket)
+	return valid_tickets
+
+def part2(rules, mine, others):
+	conditions = rules.values()
+	valid_tickets = filter_valid_tickets(conditions, others)
+	print(valid_tickets)
+
 
 pp.pprint(lines)
 print(rules)
@@ -70,3 +86,4 @@ print("mine", mine)
 print("others", others)
 
 print(part1(rules, others))
+part2(rules, mine, others)
