@@ -75,39 +75,40 @@ def filter_valid_tickets(conditions, others):
 	return valid_tickets
 
 def condition_match_every_tickets(condition, p, tickets):
-	for ticket in tickets:
-		if not is_valid(ticket[p], condition):
-			return False
-	return True
+	return all([is_valid(ticket[p], condition) for ticket in tickets])
+
+def extract_possible_positions(rules, valid_tickets):
+	possible_positions = {}
+	for k in rules.keys():
+		possible_positions[k] = []
+	for p in range(len(valid_tickets[0])):
+		for k in rules.keys():
+			r = rules[k]
+			if condition_match_every_tickets(r, p, valid_tickets):
+				possible_positions[k].append(p)
+	return possible_positions
 
 def part2(rules, mine, others):
 	conditions = rules.values()
 	valid_tickets = filter_valid_tickets(conditions, others)
 	valid_tickets.append(mine)
-	positions = []
+	
+	possible_positions = extract_possible_positions(rules, valid_tickets)
 
-	for p in range(len(mine)):
-		for k,r in zip(rules.keys(), rules.values()):
-			if k not in positions:
-				if condition_match_every_tickets(r, p, valid_tickets):
-					positions.append(k)
+	# total = []
+	# for f in found:
+	# 	if f.startswith("departure"):
+	# 		print(f)
+			# total.append(mine[positions[f]])
 
-	total = 1
-	for i, v in enumerate(positions):
-		if v.find("departure") > -1:
-			total *= mine[i]
-
-	print(valid_tickets)
-	print(positions)
-	print(total)
+	pp.pprint(possible_positions)
+	# print(total)
 
 
-
-
-pp.pprint(lines)
-print(rules)
-print("mine", mine)
-print("others", others)
+# pp.pprint(lines)
+# print(rules)
+# print("mine", mine)
+# print("others", others)
 
 print(part1(rules, others))
 part2(rules, mine, others)
