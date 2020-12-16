@@ -1,5 +1,6 @@
 import re
 import pprint
+from functools import reduce
 pp = pprint.PrettyPrinter(indent=4)
 
 file = open('input/16.txt', 'r') 
@@ -12,13 +13,13 @@ def parse_rule(line):
 	rules_split = line.split(": ")
 	name = rules_split[0]
 	conditions_split = rules_split[1].split(" or ")
-	conditions = [
-		parse_numbers(conditions_split[0], "-"),
-		parse_numbers(conditions_split[1], "-")
-	]
+	conditions = list(map(lambda c: parse_numbers(c, "-"), conditions_split))
 	return (name, conditions)
 	
 def parse(lines):
+	# Parsing through a basic state machine.
+	# State goes from "rules" to "mine" then "other".
+	# Transition happen when an empty line is found
 	step = "rules"
 	rules = {}
 	mine = None
@@ -26,14 +27,11 @@ def parse(lines):
 	for i in range(len(lines)):
 		line = lines[i]
 		if step == "rules":
-
 			if line == "":
 				step = "mine"
 			else:
 				name, conditions = parse_rule(line)
 				rules[name] = conditions
-				
-
 		elif step == "mine":
 			if line == "":
 				step = "others"
@@ -46,13 +44,10 @@ def parse(lines):
 rules, mine, others = parse(lines)
 
 def is_valid(value, condition):
-	return (value >= condition[0][0] and value <= condition[0][1]) or (value >= condition[1][0] and value <= condition[1][1])
+	return any([value >= c[0] and value <= c[1] for c in condition])
 
 def any_condition_match(v, conditions):
-    for c in conditions:
-        if is_valid(v, c):
-            return True
-    return False
+    return any([is_valid(v, c) for c in conditions])
 
 def part1(rules, others):
 	conditions = rules.values()
@@ -111,13 +106,12 @@ def part2(rules, mine, others):
 	positions = extract_positions_from(possible_positions)
 
 	pp.pprint(positions)
-	total = 1
-	for k in positions.keys():
-		if k.startswith("departure"):
-			total *= mine[positions[k]]
+
+	# Computes the product of the departure values on the owner ticket 
+	departure_positions = filter(lambda k: k.startswith("departure"), positions.keys())
+	total = reduce(lambda x, y: mine[positions[y]]*x, departure_positions, 1)
 
 	return total
-
 
 print(part1(rules, others))
 print(part2(rules, mine, others))
