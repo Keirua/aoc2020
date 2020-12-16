@@ -86,9 +86,14 @@ def part2(rules, mine, others):
 	valid_tickets.append(mine)
 	positions = []
 
-	# for p in range(len(mine)):
+	for p in range(len(mine)):
+		for k,r in zip(rules.keys(), rules.values()):
+			if k not in positions:
+				if condition_match_every_tickets(r, p, valid_tickets):
+					positions.append(k)
 
 	print(valid_tickets)
+	print(positions)
 
 
 
