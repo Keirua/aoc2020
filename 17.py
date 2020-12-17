@@ -8,6 +8,16 @@ data = [list(i.strip()) for i in file.readlines()]
 ACTIVE = '#'
 INACTIVE = '.'
 
+def neighboor_coordinates(x, y, z):
+		n = []
+		d = [-1, 0, 1]
+		for dx in d:
+			for dy in d:
+				for dz in d:
+					if (dx, dy, dz) != (0,0,0):
+						n.append((x + dx, y+dy, z + dz))
+		return n
+
 class Cube:
 	def __init__(self, x, y, z, state):
 		self.x = x
@@ -18,26 +28,61 @@ class Cube:
 	def __repr__(self):
 		return "{} {} {} {}".format(self.x, self.y, self.z, self.state)
 
-	def neighboor_coordinates(self):
-		n = []
-		d = [-1, 0, 1]
-		for dx in range(d):
-			for dy in range(d):
-				for dz in range(d):
-					if dx != 0 and dy != 0 and dz != 0:
-						n.append((dx, dy, dy))
-		return n
+class World:
+	def __init__(self):
+		self.cubes = []
+		pass
 
-def parse_world(data):
-	world = []
-	z = 0
-	for y,line in enumerate(data):
-		for x,v in enumerate(line):
-			c = Cube(x,y,z,v)
-			world.append(c)
-	return world
+	def parse(self, data):
+		self.cubes = []
+		self.x_bounds = [0,len(data)]
+		self.y_bounds = [0,len(data[0])]
+		self.z_bounds = [0,0]
+		z = 0
+		for y,line in enumerate(data):
+			for x,v in enumerate(line):
+				c = Cube(x,y,z,v)
+				self.cubes.append(c)
+				print(c)
+		print(len(self.cubes))
+		return self.cubes
 
-WORLD = parse_world(data)
+	def print(self):
+		print(len(self.cubes))
+		for c in self.cubes:
+			if c is not None:
+				print(c)
 
-for c in WORLD:
-	print(c)
+def find_cubes_states(world, cubes):
+	v = []
+	for w in world:
+		for c in cubes:
+			if w.x == c[0] and w.y == c[1] and w.z == c[2]:
+				v.append(w.state)
+	return v
+
+WORLD = World()
+WORLD.parse(data)
+
+# def step(WORLD):
+# 	new_world = []
+# 	for c in WORLD:
+# 		n = c.neighboor_coordinates()
+# 		states = find_cubes_states(WORLD, n)
+# 		print(states)
+
+# 		new_state = c.state
+# 		active_count = states.count(ACTIVE)
+# 		if c.state == ACTIVE and (active_count == 2 or active_count == 3):
+# 			new_state = INACTIVE
+# 		if c.state == INACTIVE and (active_count == 3):
+# 			new_state = ACTIVE
+# 		new_world.append(Cube(c.x, c.y, c.z, new_state))
+# 	return new_world
+
+WORLD.print()
+# for i in range(6):
+# 	print(i)
+# 	print_world(WORLD)
+# 	WORLD = step(WORLD)
+# 	print()
