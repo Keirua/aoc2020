@@ -21,3 +21,4 @@ Some cool links:
  - [Getting Crafty](https://www.reddit.com/r/adventofcode/wiki/gettincrafty) shows some very creative ideas.
  - [tourist](https://www.youtube.com/watch?v=97tieEKfvBs) is one of the best competitive programmers. He streams CodeForce problems, and that's… another level entirely.
  - [cp-algorithms](https://cp-algorithms.com/) which provides A LOT of great information regarding algorithms used for competitive programming.
+  - [How To Leaderboard](https://blog.vero.site/post/advent-leaderboard), by Betaveros, the… leader of the leaderboard.
