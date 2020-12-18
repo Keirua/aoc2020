@@ -36,9 +36,7 @@ expressions = [list(i.strip()) for i in file.readlines()]
 def parse(tokens):
 	output = []
 	operators = []
-	for t in tokens:
-		if t == " ":
-			continue
+	for t in tokens.replace(" ", ""):
 		if t in "0123456789":
 			output.append(int(t[0]))
 		if t == "+" or t == "*":
@@ -60,6 +58,7 @@ def parse(tokens):
 					output.append(o)
 			if len(operators) > 0 and operators[-1] == "(":
 				operators.pop()
+		print(t, operators, output)
 
 	while len(operators) > 0:
 		output.append(operators.pop())
