@@ -22,58 +22,50 @@ def bounds(cubes, coord):
 	return min(values), max(values)
 
 def active_count(on, cubes):
-	nb = 0
-	for c in cubes:
-		if c in on:
-			nb += 1
-	return nb
+	return sum([c in on for c in cubes])
 
-class World:
-	def __init__(self):
-		self.on = set()
+def parse(data):
+	on = set()
+	
+	for y,line in enumerate(data):
+		for x,v in enumerate(line):
+			if v == ACTIVE:
+				on.add((x,y,0))
+	return on
 
-	def parse(self, data):
-		self.on = set()
-		
-		for y,line in enumerate(data):
-			for x,v in enumerate(line):
-				if v == ACTIVE:
-					self.on.add((x,y,0))
-		return self.on
+def print_world(on):
+	for c in on:
+		print(c)
 
-	def print(self):
-		for c in self.on:
-			print(c)
+def step(on):
+	bounds_x = bounds(on, 0)
+	bounds_y = bounds(on, 1)
+	bounds_z = bounds(on, 2)
+	print(bounds_x, bounds_y, bounds_z)
+	print()
+	
+	next_on = set()
+	# for x in range(bounds_x[0]-1, bounds_x[1] + 2):
+	# 	for y in range(bounds_y[0]-1, bounds_y[1] + 2):
+	# 		for z in range(bounds_z[0]-1, bounds_z[1] + 2):	
+	for x in range(-15, 15):
+		for y in range(-15, 15):
+			for z in range(-15, 15):
+				coords = neighboor_coordinates(x, y, z)
 
-	def step(self):
-		bounds_x = bounds(self.on, 0)
-		bounds_y = bounds(self.on, 1)
-		bounds_z = bounds(self.on, 2)
-		
-		next_on = set()
-		for x in range(bounds_x[0]-1, bounds_x[1] + 2):
-			for y in range(bounds_y[0]-1, bounds_y[1] + 2):
-				for z in range(bounds_z[0]-1, bounds_z[1] + 2):		
-					coords = neighboor_coordinates(x, y, z)
-					nb_active_neighbours = active_count(self.on, coords)
-					is_active = (active_count(self.on, [(x,y,z)]) == 1)
+				nb_active_neighbours = active_count(on, coords)
+				is_active = (active_count(on, [(x,y,z)]) == 1)
 
-					if is_active and (nb_active_neighbours == 2 or nb_active_neighbours == 3):
-						pass
-					if not is_active and (nb_active_neighbours == 3):
-						next_on.add((x, y, z))
-		self.on = next_on
+				if not is_active and (nb_active_neighbours == 3):
+					next_on.add((x, y, z))
+	return next_on
 
-WORLD = World()
-WORLD.parse(data)
+WORLD = parse(data)
 
-WORLD.print()
+print_world(WORLD)
 print()
-WORLD.step()
-print()
-WORLD.print()
-
-# for i in range(6):
-# 	print(i)
-# 	WORLD = WORLD.step()
-# 	WORLD.print()
+for _ in range(6):
+	WORLD = step(WORLD)
+	print()
+	# print_world(WORLD)
+print(len(WORLD))
