@@ -58,13 +58,40 @@ def parse(tokens):
 					break
 				else:
 					output.append(o)
+			if len(operators) > 0 and operators[-1] == "(":
+				operators.pop()
 
 	while len(operators) > 0:
 		output.append(operators.pop())
 
 	return output
 
-tokens = "2 * 3 + (4 * 5)"
-print(tokens)
-# for tokens in expressions:
-print(parse(tokens))
+def eval(tokens):
+	stk = []
+	operations = {
+		"+": lambda a, b: a+b,
+		"*": lambda a, b: a*b,
+	}
+	for t in tokens:
+		if isinstance(t, int):
+			stk.append(t)
+		else:
+			a = stk.pop()
+			b = stk.pop()
+			stk.append(operations[t](a, b))
+	assert(len(stk) == 1)
+	return stk[0]
+
+
+sample_tokens = [
+	("2 * 3 + (4 * 5)", 26),
+	("5 + (8 * 3 + 9 + 3 * 4 * 3)", 437),
+	("5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))", 12240),
+	("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2", 13632),
+]
+for s,e in sample_tokens:
+	print(s, e)
+	parsed = parse(s)
+	print(parsed)
+	print(eval(parsed))
+	assert(eval(parsed) == e)
