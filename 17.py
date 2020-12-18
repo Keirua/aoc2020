@@ -2,17 +2,16 @@ import re
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
-file = open('input/17ex.txt', 'r') 
+file = open('input/17.txt', 'r') 
 data = [list(i.strip()) for i in file.readlines()]
 
 ACTIVE = '#'
 
 def neighboor_coordinates(x, y, z):
 		n = []
-		d = [-1, 0, 1]
-		for dx in d:
-			for dy in d:
-				for dz in d:
+		for dx in [-1, 0, 1]:
+			for dy in [-1, 0, 1]:
+				for dz in [-1, 0, 1]:
 					if (dx, dy, dz) != (0,0,0):
 						n.append((x + dx, y+dy, z + dz))
 		return n
@@ -20,9 +19,6 @@ def neighboor_coordinates(x, y, z):
 def bounds(cubes, coord):
 	values = [c[coord] for c in cubes]
 	return min(values), max(values)
-
-def active_count(on, cubes):
-	return sum([c in on for c in cubes])
 
 def parse(data):
 	on = set()
@@ -45,17 +41,15 @@ def step(on):
 	print()
 	
 	next_on = set()
-	# for x in range(bounds_x[0]-1, bounds_x[1] + 2):
-	# 	for y in range(bounds_y[0]-1, bounds_y[1] + 2):
-	# 		for z in range(bounds_z[0]-1, bounds_z[1] + 2):	
-	for x in range(-15, 15):
-		for y in range(-15, 15):
-			for z in range(-15, 15):
+	for x in range(bounds_x[0]-1, bounds_x[1] + 2):
+		for y in range(bounds_y[0]-1, bounds_y[1] + 2):
+			for z in range(bounds_z[0]-1, bounds_z[1] + 2):	
 				coords = neighboor_coordinates(x, y, z)
 
-				nb_active_neighbours = active_count(on, coords)
-				is_active = (active_count(on, [(x,y,z)]) == 1)
-
+				nb_active_neighbours = sum([1 if c in on else 0 for c in coords])
+				is_active = (x, y, z) in on
+				if is_active and (nb_active_neighbours == 2 or nb_active_neighbours == 3):
+					next_on.add((x, y, z))
 				if not is_active and (nb_active_neighbours == 3):
 					next_on.add((x, y, z))
 	return next_on
