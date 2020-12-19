@@ -26,5 +26,21 @@ def parse(data):
 			rules[i] = rule
 
 words, rules = parse(data)
+
+
+
+def match(rules, word):
+	wpos = 0
+	rule_no = 0
+	return False
+
+
 pp.pprint(rules)
 print(words)
+
+assert(match(rules, "ababbb") == True)
+assert(match(rules, "abbbab") == True)
+
+assert(match(rules, "bababa") == False)
+assert(match(rules, "aaabbb") == False)
+assert(match(rules, "aaaabbb") == False) # may seem to match, but has un unmatched character at the end
