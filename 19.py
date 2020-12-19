@@ -27,18 +27,43 @@ def parse(data):
 
 words, rules = parse(data)
 
-
+# CYK algorithm / Cocke–Younger–Kasami algorithm
+# https://en.wikipedia.org/wiki/CYK_algorithm
 
 def match(rules, word):
-	return False
-	# curr_rule_no = 0
-	# curr_rule_idx = 0
-	# parent_rule = rules[curr_rule_no]
-	# child_rules = [ rules[p[curr_rule_idx]] for p in parent_rule["rules"] ]
-	# if(len(child_rules) == 1) and "match" in child_rules[0].keys():
-	# 	if child_rules[0]["match"] == word[wpos]:
-	# 		print("match for {}".format(child_rules[0]["match"]))
-	# return False
+	# let the input be a string I consisting of n characters: a1 ... an.
+	n = len(word)
+	# let the grammar contain r nonterminal symbols R1 ... Rr, with start symbol R1.
+	r = len(rules)
+	# let P[n,n,r] be an array of booleans. Initialize all elements of P to false.
+	P = {}
+	for i in range(n):
+		for j in range(n):
+			for k in range(r):
+				P[(i,j,k)] = False
+	# for each s = 1 to n
+	#     for each unit production Rv → as
+	#         set P[1,s,v] = true
+	for s in range(n):
+		for v in range(r):
+			rule = rules[v]
+			if "match" in rule and rule["match"] == word[s]:
+				P[(0, s, v)] = True
+
+
+	# for each l = 2 to n -- Length of span
+	#     for each s = 1 to n-l+1 -- Start of span
+	#         for each p = 1 to l-1 -- Partition of span
+	#             for each production Ra    → Rb Rc
+	#                 if P[p,s,b] and P[l-p,s+p,c] then set P[l,s,a] = true
+
+	# if P[n,1,1] is true then
+	#     I is member of language
+	# else
+	#     I is not member of language
+
+	pp.pprint(P)
+
 
 
 pp.pprint(rules)
