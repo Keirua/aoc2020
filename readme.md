@@ -8,6 +8,7 @@ Some of the cool problems with a reasonnably clean solutions, and/or where I hav
  - 13b (solved with chinese remainder theorem, which requires extended gcd)
  - 14b (generating every possible bit combinations)
  - Turns out 15 is the [Van Eck Sequence](https://rosettacode.org/wiki/Van_Eck_sequence). Many went for a brute force solution, which is OK on todays machines (<20s in python).
+ - 18 involved evaluating a math expression. There are [many ways](https://www.reddit.com/r/adventofcode/comments/kfor25/2020_day_18_how_many_different_approaches_can_you/) to do so.
 
 Some cool links:
  - [the subreddit](reddit.com/r/adventofcode) where the community gathers
@@ -21,4 +22,4 @@ Some cool links:
  - [Getting Crafty](https://www.reddit.com/r/adventofcode/wiki/gettincrafty) shows some very creative ideas.
  - [tourist](https://www.youtube.com/watch?v=97tieEKfvBs) is one of the best competitive programmers. He streams CodeForce problems, and that's… another level entirely.
  - [cp-algorithms](https://cp-algorithms.com/) which provides A LOT of great information regarding algorithms used for competitive programming.
-  - [How To Leaderboard](https://blog.vero.site/post/advent-leaderboard), by Betaveros, the… leader of the leaderboard.
+ - [How To Leaderboard](https://blog.vero.site/post/advent-leaderboard), by Betaveros, the… leader of the leaderboard.
