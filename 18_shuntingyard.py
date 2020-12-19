@@ -26,26 +26,31 @@
 #         /* If the operator token on the top of the stack is a parenthesis, then there are mismatched parentheses. */
 #         pop the operator from the operator stack onto the output queue.
 
+# Check implem with
+# https://rosettacode.org/wiki/Parsing/RPN/Ruby
+
 import re
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
 file = open('input/18.txt', 'r') 
-expressions = [list(i.strip()) for i in file.readlines()]
+data = [i.strip() for i in file.readlines()]
 
-def parse(tokens):
+def parse_infix_to_rpn(tokens):
+	"""
+	Converts from infix to RPN with the shunting yard algorithm
+	"""
 	output = []
 	operators = []
 	for t in tokens.replace(" ", ""):
 		if t in "0123456789":
 			output.append(int(t[0]))
 		if t == "+" or t == "*":
-			while len(operators) > 0:
-				o = operators.pop()
+			if len(operators) > 0:
+				o = operators[-1]
 				if o != "(":
 					output.append(o)
-				else:
-					break
+					operators.pop()
 			operators.append(t)
 		if t == "(":
 			operators.append("(")
@@ -56,16 +61,17 @@ def parse(tokens):
 					break
 				else:
 					output.append(o)
-			if len(operators) > 0 and operators[-1] == "(":
-				operators.pop()
-		print(t, operators, output)
+		# print(t, operators, output)
 
 	while len(operators) > 0:
 		output.append(operators.pop())
 
 	return output
 
-def eval(tokens):
+def eval_rpn(tokens):
+	"""
+	Evaluates a RPN expression and returns the result
+	"""
 	stk = []
 	operations = {
 		"+": lambda a, b: a+b,
@@ -82,6 +88,9 @@ def eval(tokens):
 	return stk[0]
 
 
+def p1(expr):
+	return eval_rpn(parse_infix_to_rpn(expr))
+
 sample_tokens = [
 	("2 * 3 + (4 * 5)", 26),
 	("5 + (8 * 3 + 9 + 3 * 4 * 3)", 437),
@@ -89,8 +98,11 @@ sample_tokens = [
 	("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2", 13632),
 ]
 for s,e in sample_tokens:
-	print(s, e)
-	parsed = parse(s)
-	print(parsed)
-	print(eval(parsed))
-	assert(eval(parsed) == e)
+	# print(s, e)
+	parsed = parse_infix_to_rpn(s)
+	# print(parsed)
+	# print(eval_rpn(parsed))
+	assert(eval_rpn(parsed) == e)
+
+print(sum(map(p1, data)))
+# print(sum(map(p2, data)))
