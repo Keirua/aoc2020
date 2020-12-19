@@ -30,9 +30,15 @@ words, rules = parse(data)
 
 
 def match(rules, word):
-	wpos = 0
-	rule_no = 0
 	return False
+	# curr_rule_no = 0
+	# curr_rule_idx = 0
+	# parent_rule = rules[curr_rule_no]
+	# child_rules = [ rules[p[curr_rule_idx]] for p in parent_rule["rules"] ]
+	# if(len(child_rules) == 1) and "match" in child_rules[0].keys():
+	# 	if child_rules[0]["match"] == word[wpos]:
+	# 		print("match for {}".format(child_rules[0]["match"]))
+	# return False
 
 
 pp.pprint(rules)
