@@ -159,3 +159,10 @@ for t_id in tiles.keys():
  	neighbours[t_id] = n
 
 pp.pprint(neighbours)
+
+possible_tiles = {}
+for t_id in tiles.keys():
+	all_perms = generate_all_permutations(tiles[t_id])
+	for i,p in enumerate(all_perms):
+		possible_tiles[(t_id, i)] = p
+pp.pprint(possible_tiles)		
