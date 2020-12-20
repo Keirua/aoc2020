@@ -145,9 +145,11 @@ def generate_all_permutations(tile):
 tiles_with_variations = {}
 for t_id in tiles.keys():
 	all_perms = generate_all_permutations(tiles[t_id])
-# 	for i,p in enumerate(all_perms):
 	tiles_with_variations[t_id] = all_perms
 pp.pprint(tiles_with_variations)
+
+def directions():
+	return ["west", "north", "east", "south"]
 
 def neighbour_coords(x, y):
 	neighbours = {}
@@ -162,12 +164,49 @@ def neighbour_coords(x, y):
 			neighbours[dir[i]] =  (x2, y2)
 	return neighbours
 
+
+def possible_neighbours(tile, tiles):
+	neighbours = {
+		"north": [],
+		"south": [],
+		"east": [],
+		"west": []
+	}
+	b = borders(tile)
+	for _, (k,v) in enumerate(tiles.items()):
+		bn = borders(v)
+		if bn[BOTTOM] == b[TOP]:
+			neighbours["north"].append(k)
+		if bn[TOP] == b[BOTTOM]:
+			neighbours["south"].append(k)
+		if bn[LEFT] == b[RIGHT]:
+			neighbours["east"].append(k)
+		if bn[RIGHT] == b[LEFT]:
+			neighbours["west"].append(k)
+	return neighbours
+
+def can_be_neighbour(variant, neighbor_tile, direction):
+	bv = borders(variant)
+	bn = borders(neighbor_tile)
+	if direction == "north": 
+		return bv[TOP] == bn[BOTTOM]
+	if direction == "south":
+		return bv[BOTTOM] == bn[TOP]
+	if direction == "east":
+		return bv[RIGHT] == bn[LEFT]
+	if direction == "west":
+		return bv[LEFT] == bn[RIGHT]
+
+	raise("should not happen")
+
+
 def backtrack():
     coords = [(i, j) for i in range(N) for j in range(N)]
     grid = [[None for _ in range(N)] for _ in range(N)]
     unused_ids = list(tiles_with_variations.keys())
     step = 0
-
+    # Backtracking:
+    # we add an initial state, with an empty grid and all the tiles to place
     root = {
         'step': step,
         'grid': grid,
@@ -185,8 +224,35 @@ def backtrack():
 
     	for tid in unused_ids:
     		for variant in tiles_with_variations[tid]:
-    			fits = True
-    			# variant needs to find in every neighbouring cell
+    			fits_all_neighbours = True
+    			# variant needs to fit in every valid neighbouring cell that is a tile
+    			neighbouring_cell_coords = neighbour_coords(x, y)
+    			for _, (dir, coord) in enumerate(neighbouring_cell_coords.items()):
+
+    				neighbor_tile = grid[coord[1]][coord[0]]
+    				# If there is a tile already, we want to ensure this variant can be neighbour with
+    				# the existing neighbour cell, in the given direction
+    				if not neighbor_tile is None:
+    					# 
+    					if not can_be_neighbour(variant, neighbor_tile, dir):
+    						fits_all_neighbours = False
+    						break
+    			# If this variant cannot fit in every direction, we move on to another variant
+    			# Otherwise, we add this new state to the stack
+    			if not fits_all_neighbours:
+    				continue
+    			else:
+    				next_grid = [row[:] for row in grid]
+    				next_grid[y][x] = variant
+    				next_unused_ids = unused_ids[:]
+    				next_unused_ids.remove(tid)
+    				new_state = {
+    					"step": step + 1,
+    					"grid": next_grid,
+    					"unused_ids": next_unused_ids
+    				}
+    				stack.append(new_state)
+
 
 print(N)
 print(neighbour_coords(0,0))
@@ -194,4 +260,9 @@ print(neighbour_coords(0,1))
 print(neighbour_coords(1,1))
 print(neighbour_coords(2,1))
 print(neighbour_coords(2,2))
-# backtrack()
+p = backtrack()
+g = p["grid"]
+pp.pprint(g)
+for y, l in enumerate(g):
+	for x, c in enumerate(l):
+		print(x, y, g[y][x])
