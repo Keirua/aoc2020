@@ -174,7 +174,7 @@ def backtrack():
                     stack.append(new_state)
 
 
-file = open('input/20.txt', 'r') 
+file = open('input/20ex.txt', 'r') 
 data = [i.strip() for i in file.readlines()]
 
 tiles = parse(data)
@@ -187,11 +187,11 @@ for t_id in tiles.keys():
 
 p = backtrack()
 g = p["grid"]
-# pp.pprint(g)
-# for y, l in enumerate(g):
-#     for x, c in enumerate(l):
-#         if (y,x) in g:
-#             print(x, y, g[(y,x)])
+pp.pprint(g)
+for y, l in enumerate(g):
+    for x, c in enumerate(l):
+        if (y,x) in g:
+            print(x, y, g[(y,x)])
 
 def p1(grid_ids):
     """
@@ -206,4 +206,50 @@ def p1(grid_ids):
     ]
     return prod(corner_cells)
 
-print(p1(p["grid_ids"]))
+
+def monster_pattern_offsets():
+    """
+    Converts the monster pattern into a list of the offsets where the monster must appear
+    """
+    monster_pattern = r"""..................#.
+#....##....##....###
+.#..#..#..#..#..#...   
+"""
+    positions = []
+    lines = monster_pattern.split("\n")
+    for y, l in enumerate(lines):
+        for x, c in enumerate(l):
+            if c == "#":
+                positions.append((x, y))
+    return positions
+
+def p2(p):
+    g = p["grid"]
+    key = list(tiles.keys())[0]
+    tile_w = len(tiles[key])
+    print(tile_w)
+    image = [["."] * (N+1) * tile_w] * (N+1) * tile_w
+    # For all the tiles in the grid
+    for y, l in enumerate(g):
+        for x, c in enumerate(l):
+            # if (y,x) in g:
+            #     print(x, y, g[(y,x)], c)
+
+            if (y,x) in g:
+                y0 = (tile_w-2) * y
+                x0 = (tile_w-2) * x
+                variant = g[(y, x)]
+                # Plot the tile in the image
+                for yv in range(1, tile_w-1):
+                    for xv in range(1, tile_w-1):
+                        # print(x0, y0, xv, yv)
+                        image[y0 + yv][x0 + xv] = variant[yv][xv]
+
+    # Display the image
+    for line in image:
+        print("".join(line))
+    # pp.pprint(image)
+
+# print(p1(p["grid_ids"]))
+# p2(p)
+print(monster_pattern_offsets())

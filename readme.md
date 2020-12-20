@@ -9,6 +9,7 @@ Some of the cool problems with a reasonnably clean solutions, and/or where I hav
  - 14b (generating every possible bit combinations)
  - Turns out 15 is the [Van Eck Sequence](https://rosettacode.org/wiki/Van_Eck_sequence). Many went for a brute force solution, which is OK on todays machines (<20s in python).
  - 18 involved evaluating a math expression. There are [many ways](https://www.reddit.com/r/adventofcode/comments/kfor25/2020_day_18_how_many_different_approaches_can_you/) to do so.
+ - 20. Classic backtracking, but with a lot of setup in order to generate the neighbouring states and and performing validity checks
 
 Some cool links:
  - [the subreddit](reddit.com/r/adventofcode) where the community gathers
