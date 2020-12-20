@@ -29,7 +29,7 @@ words, rules = parse(data)
 
 # CYK algorithm / Cocke–Younger–Kasami algorithm
 # https://en.wikipedia.org/wiki/CYK_algorithm
-
+# https://github.com/prscoelho/aoc2020/blob/main/src/day19/day19.rs
 def match(rules, word):
 	# let the input be a string I consisting of n characters: a1 ... an.
 	n = len(word)
@@ -50,19 +50,27 @@ def match(rules, word):
 			if "match" in rule and rule["match"] == word[s]:
 				P[(0, s, v)] = True
 
-
 	# for each l = 2 to n -- Length of span
 	#     for each s = 1 to n-l+1 -- Start of span
 	#         for each p = 1 to l-1 -- Partition of span
 	#             for each production Ra    → Rb Rc
 	#                 if P[p,s,b] and P[l-p,s+p,c] then set P[l,s,a] = true
+	for l in range(1, n):
+		for s in range(0, n-l+1):
+			for p in range(0, l-1):
+				for a in range(r):
+					rule = rules[a]
+					if "rules" in rule and len(rule["rules"]) == 2:
+						for sub_rule in rule["rules"]:
+							if P[(p, s, sub_rule[0])] and P[(l-p, s+p, sub_rule[1])]:
+								P[(l,s,a)] = True
 
 	# if P[n,1,1] is true then
 	#     I is member of language
 	# else
 	#     I is not member of language
-
-	pp.pprint(P)
+	# pp.pprint(P)
+	return P[(n-1,0,0)]
 
 
 
