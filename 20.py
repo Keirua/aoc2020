@@ -1,6 +1,7 @@
 import re
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
+from math import sqrt
 
 file = open('input/20ex.txt', 'r') 
 data = [i.strip() for i in file.readlines()]
@@ -62,33 +63,11 @@ def rotate_90(original):
     # return list(zip(*original[::-1]))
     return list(map(lambda l: "".join(l), zip(*original[::-1])))
 
-def rotate_m90(original):
-    return list(map(lambda l: "".join(l), list(zip(*original))[::-1]))
-
-def rotate_m180(original):
-    return rotate_m90(rotate_m90(original))
-
-def rotate_m270(original):
-    return rotate_m90(rotate_m90(rotate_m90(original)))
-
 def rotate_180(original):
 	return rotate_90(rotate_90(original))
 
 def rotate_270(original):
 	return rotate_90(rotate_90(rotate_90(original)))
-
-def flip_horizontal(tile):
-	"""
-	flip horizontal = read columns in reverse order
-	"""
-	l = len(tile)
-	out = [list("."* len(tile)) for i in range(l)]
-	for y in range(l):
-		for x in range(l):
-			out[y][x] = tile[y][l-1-x]
-	for y in range(l):
-			out[y] = "".join(out[y])
-	return out
 
 def flip_vertical(tile):
 	"""
@@ -97,7 +76,10 @@ def flip_vertical(tile):
 	return tile[::-1]
 
 tiles = parse(data)
+N = int(sqrt(len(tiles.keys())))
+
 pp.pprint(tiles)
+pp.pprint(N)
 
 # print("original tile")
 # pp.pprint(tiles[2311])
@@ -148,21 +130,68 @@ def generate_all_permutations(tile):
 
 	return permutations
 
-print("borders of the original tile")
-print(borders(tiles[2311]))
-pp.pprint(generate_all_permutations(tiles[2311]))
+# print("borders of the original tile")
+# print(borders(tiles[2311]))
+# pp.pprint(generate_all_permutations(tiles[2311]))
 
-print()
-neighbours = {}
-for t_id in tiles.keys():
- 	n = possible_neighbours(tiles[t_id], tiles)
- 	neighbours[t_id] = n
+# print()
+# neighbours = {}
+# for t_id in tiles.keys():
+#  	n = possible_neighbours(tiles[t_id], tiles)
+#  	neighbours[t_id] = n
 
-pp.pprint(neighbours)
+# pp.pprint(neighbours)
 
-possible_tiles = {}
+tiles_with_variations = {}
 for t_id in tiles.keys():
 	all_perms = generate_all_permutations(tiles[t_id])
-	for i,p in enumerate(all_perms):
-		possible_tiles[(t_id, i)] = p
-pp.pprint(possible_tiles)		
+# 	for i,p in enumerate(all_perms):
+	tiles_with_variations[t_id] = all_perms
+pp.pprint(tiles_with_variations)
+
+def neighbour_coords(x, y):
+	neighbours = {}
+	dir = ["west", "north", "east", "south"]
+	dx = [-1, 0, 1, 0]
+	dy = [0, -1, 0, 1]
+	for i in range(len(dx)):
+		x2 = x+dx[i]
+		y2 = y+dy[i]
+
+		if x2 >= 0 and y2 >=0 and x2 < N and y2 < N:
+			neighbours[dir[i]] =  (x2, y2)
+	return neighbours
+
+def backtrack():
+    coords = [(i, j) for i in range(N) for j in range(N)]
+    grid = [[None for _ in range(N)] for _ in range(N)]
+    unused_ids = list(tiles_with_variations.keys())
+    step = 0
+
+    root = {
+        'step': step,
+        'grid': grid,
+        'unused_ids': unused_ids,
+    }
+    stack = [root]
+    while len(stack) > 0:
+    	p = stack.pop()
+    	step = p["step"]
+    	grid = p["grid"]
+    	unused_ids = p["unused_ids"]
+    	if step == len(coords):
+    		return p
+    	x,y = coords[step]
+
+    	for tid in unused_ids:
+    		for variant in tiles_with_variations[tid]:
+    			fits = True
+    			# variant needs to find in every neighbouring cell
+
+print(N)
+print(neighbour_coords(0,0))
+print(neighbour_coords(0,1))
+print(neighbour_coords(1,1))
+print(neighbour_coords(2,1))
+print(neighbour_coords(2,2))
+# backtrack()
