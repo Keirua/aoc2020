@@ -34,8 +34,6 @@ def borders(tile):
 	]
 	return b
 
-
-
 def possible_neighbours(tile, tiles):
 	neighbours = {
 		"north": [],
@@ -56,11 +54,30 @@ def possible_neighbours(tile, tiles):
 			neighbours["west"].append(k)
 	return neighbours
 
+def flip_horizontal(tile):
+	l = len(tile)
+	out = [list("."* len(tile)) for i in range(l)]
+	for y in range(l):
+		for x in range(l):
+			out[y][x] = tile[y][l-1-x]
+	for y in range(l):
+			out[y] = "".join(out[y])
+	return out
+
+def flip_vertical(tile):
+	return tile[::-1]
 
 tiles = parse(data)
 pp.pprint(tiles)
 
 print(borders(tiles[2311]))
+print("original tile")
+pp.pprint(tiles[2311])
+print("flip_vertical")
+pp.pprint(flip_vertical(tiles[2311]))
+print("flip_horizontal")
+pp.pprint(flip_horizontal(tiles[2311]))
+print()
 neighbours = {}
 for t_id in tiles.keys():
  	n = possible_neighbours(tiles[t_id], tiles)
