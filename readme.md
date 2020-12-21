@@ -2,7 +2,7 @@ My solutions to advent of code 2020, in Python
 
 Some of the cool problems with a reasonnably clean solutions, and/or where I have learnt something are:
  - 2 using a PEG − Parsing expression grammar. Thanks [Fasterthanlime](https://fasterthanli.me/series/advent-of-code-2020/part-2)
- - 7 The counting part was fun, it involves graph traversal using BFS and DFS. (the parsing is not very interesting)
+ - 7 The counting part was fun, it involves graph traversal using BFS and DFS
  - 8a (parsing and running a simple programming language). The first part is straightforward, the 2nd part does not add much
  - 10b dynamic programming (10b2 has some notes)
  - 13b (solved with chinese remainder theorem, which requires extended gcd)

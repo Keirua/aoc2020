@@ -206,13 +206,24 @@ def monster_pattern_offsets():
 
 def p2(p):
     grid = p["grid"]
+    tile_w = 8
+    W = tile_w * N
+    bitmap = []
+    for _ in range(W):
+        bitmap.append(list("." * (W)))
 
     # For all the tiles in the grid
     for _, (y, x) in enumerate(grid):
         tile = g[(y, x)]
-        print(y, x, tile)
-
-
+        x0, y0 = tile_w * x, tile_w * y
+        for ty in range(1, tile_w):
+            for tx in range(1, tile_w):
+                c = tile[ty][tx]
+                bitmap[y0+ty][x0+tx] = c
+    for l in bitmap:
+        print("".join(l))
+    print()
+    return bitmap
 
 file = open('input/20.txt', 'r') 
 data = [i.strip() for i in file.readlines()]
@@ -229,7 +240,6 @@ p = backtrack()
 g = p["grid"]
 print("grid")
 pp.pprint(g)
-
 
 print()
 for _, (y, x) in enumerate(g):
