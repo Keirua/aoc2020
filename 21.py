@@ -49,3 +49,25 @@ total_safe = 0
 for c,p in recipes:
     total_safe += len(c.intersection(safe_cipher))
 print(total_safe)
+pp.pprint(possible_words)
+
+# Part 2 is constraint propagation again
+
+plaintext_allergens = list(possible_words.keys())
+pp.pprint(possible_words)
+exact_mapping = {}
+while(len(exact_mapping.keys()) != len(plaintext_allergens)):
+    for p in plaintext_allergens:
+        if len(possible_words[p]) == 1:
+            v = list(possible_words[p])[0]
+            exact_mapping[p] = v
+
+            for p2 in plaintext_allergens:
+                if p2 != p and v in possible_words[p2]:
+                    # print(p2, p, v)
+                    possible_words[p2].remove(v)
+
+keys = sorted(exact_mapping.keys())
+canonical_dangerous = ",".join([ exact_mapping[k] for k in keys])
+print(canonical_dangerous)
+
