@@ -2,7 +2,7 @@ import re
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
-file = open('input/19ex.txt', 'r') 
+file = open('input/19.txt', 'r') 
 data = [i.strip() for i in file.readlines()]
 
 def parse(data):
@@ -14,16 +14,19 @@ def parse(data):
 			return words, rules
 		else:
 			rule = {}
-			line = line.split(": ")[1]
+			name, line = line.split(": ")
 			if line.find("\"") > -1:
 				rule["match"] = line.replace("\"", "")
 			else:
 				s = line.split("|")
-				ors = list(map(lambda x: list(x.replace(" ", "")), s))
 				rule["rules"] = []
-				for r in ors:
-					rule["rules"].append([int(c) for c in r])
-			rules[i] = rule
+				for r in s:
+					subrule = [int(c) for c in r.split(" ") if c != ""]
+					if len(subrule) != 2:
+						print(name, subrule)
+					rule["rules"].append(subrule)
+
+			rules[int(name)] = rule
 
 words, rules = parse(data)
 
@@ -77,7 +80,7 @@ def match(rules, word):
 
 
 pp.pprint(rules)
-print(words)
+# print(words)
 
 assert(match(rules, "ababbb") == True)
 assert(match(rules, "abbbab") == True)
