@@ -204,26 +204,67 @@ def monster_pattern_offsets():
                 positions.append((x, y))
     return positions
 
-def p2(p):
+def generate_bitmap(p):
     grid = p["grid"]
     tile_w = 8
     W = tile_w * N
     bitmap = []
     for _ in range(W):
-        bitmap.append(list("." * (W)))
+        bitmap.append(list("x" * (W)))
 
     # For all the tiles in the grid
     for _, (y, x) in enumerate(grid):
         tile = g[(y, x)]
-        x0, y0 = tile_w * x, tile_w * y
-        for ty in range(1, tile_w):
-            for tx in range(1, tile_w):
-                c = tile[ty][tx]
+        # compute the offset, then plot the pixels
+        x0, y0 = tile_w * x, tile_w * (N-y-1)
+        for ty in range(0, len(tile)-2):
+            for tx in range(0, len(tile)-2):
+                c = tile[ty+1][tx+1]
+                # print(y0+ty, x0+tx)
+                if bitmap[y0+ty][x0+tx] != "x":
+                    print("overdraaaaaaaaaaw")
+                    print(y0+ty, x0+tx, y0, x0, ty, tx, y, x)
                 bitmap[y0+ty][x0+tx] = c
+    return bitmap
+
+def in_bitmap(x, y):
+    return x >=0 and y >=0 and x < N*8 and y < N*8
+
+def draw_image(bitmap):
     for l in bitmap:
         print("".join(l))
     print()
-    return bitmap
+
+def search_monsters(bitmap):
+    monster_positions = monster_pattern_offsets()
+    # print(monster_positions, len(monster_positions))
+    has_monsters = False
+    # For every pixel in the bitmap
+    for y in range(N*8):
+        for x in range(N*8):
+            # if, starting from pixel
+            if all([in_bitmap(x+dx, y+dy) for dx, dy in monster_positions]):
+                # print("searching inside")
+                if all([bitmap[y+dy][x+dx] == "#" for dx,dy in monster_positions]):
+                    has_monsters = True
+                    for dx,dy in monster_positions:
+                        bitmap[y+dy][x+dx] = "O"
+    return bitmap, has_monsters
+
+def water_roughness(bitmap):
+    return sum([l.count("#") for l in bitmap])
+
+def p2(p):
+    bitmap = generate_bitmap(p)
+    draw_image(bitmap)
+    for v in generate_all_permutations(bitmap):
+        new_bitmap, has_monsters = search_monsters(v)
+        # draw_image(v)
+        print()
+        if has_monsters:
+            draw_image(new_bitmap)
+            print(water_roughness(new_bitmap))
+            print()
 
 file = open('input/20.txt', 'r') 
 data = [i.strip() for i in file.readlines()]
@@ -242,12 +283,6 @@ print("grid")
 pp.pprint(g)
 
 print()
-for _, (y, x) in enumerate(g):
-    print((y, x), g[(y, x)])
-    # for x, c in enumerate(l):
-    #     if (y,x) in g:
-    #         print(x, y, g[(y,x)])
 
 print(p1(p["grid_ids"]))
 p2(p)
-# print(monster_pattern_offsets())
