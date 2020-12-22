@@ -22,13 +22,19 @@ def parse(data):
 				rule["rules"] = []
 				for r in s:
 					subrule = [int(c) for c in r.split(" ") if c != ""]
-					if len(subrule) != 2:
-						print(name, subrule)
 					rule["rules"].append(subrule)
 
 			rules[int(name)] = rule
 
-words, rules = parse(data)
+def remove_ones(rules):
+	# if a rule leads to only one othe rule, we replace it with the target destination
+	for k in rules.keys():
+		if "rules" in rules[k]:
+			for i,sr in enumerate(rules[k]["rules"]):
+				if len(sr) == 1:
+					print(sr[0])
+					rules[k]["rules"][i] = rules[sr[0]]
+	return rules
 
 # CYK algorithm / Cocke–Younger–Kasami algorithm
 # https://en.wikipedia.org/wiki/CYK_algorithm
@@ -78,9 +84,10 @@ def match(rules, word):
 	return P[(n,0,0)]
 
 
-
+words, rules = parse(data)
+# We then need to transform the rules
+# rules = remove_ones(rules)
 pp.pprint(rules)
-# print(words)
 
 assert(match(rules, "ababbb") == True)
 assert(match(rules, "abbbab") == True)
