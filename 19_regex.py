@@ -14,30 +14,59 @@ def parse(data):
 			return words, rules
 		else:
 			name, content = line.split(": ")
-			rules[name] = content.strip().split(" ")
+			rules[name] = content.split(" ")
 
 	return rules
 
-def resolve_token(token):
-	if token.startswith("\""):
+def resolve_token_a(token):
+	if token[0] == "\"":
+		return token[1] # rules only contain 1 char
+	elif token == "|":
+		return "|"
+	else:
+		return "(" + resolve_rule_a(token) + ")"
+
+def resolve_rule_a(rule_number):
+	return "".join([resolve_token_a(t) for t in rules[rule_number]])
+
+def resolve_token_b(token):
+	if token[0] == "\"":
 		return token[1]
 	elif token == "|":
 		return "|"
 	else:
-		return "(" + resolve_rule(token) + ")"
+		return "(" + resolve_rule_b(token) + ")"
 
-def resolve_rule(rule_number):
-	return "".join([resolve_token(t) for t in rules[rule_number]])
+def resolve_rule_b(rule_number):
+	if rule_number == "8":
+		# rules["8"] = "42 | 42 8"
+		# <=> 42+
+		return "(" + resolve_rule_b("42") + ")+"
+	elif rule_number == "11":
+		# rules["11"] = "42 31 | 42 11 31"
+		# <=> 42 31 | 42 42 31 31 | 42 42 42 31 31 31 | …
+		# we limit the recursion level, which seems enough to solve the problem
+		r42 = "(" + resolve_rule_b("42") + ")"
+		r31 = "(" + resolve_rule_b("31") + ")"
+		return "|".join(r42*n + r31*n for n in range(1, 5))
+
+	return "".join([resolve_token_b(t) for t in rules[rule_number]])
 
 def part1(words, rules):
-	regex = "^" + resolve_rule("0") + "$"
-	print(regex)
-	return sum([1 for word in words if re.match(regex, word)])
+	regex = "^" + resolve_rule_a("0") + "$"
+	# print(regex)
+	return sum([int(re.match(regex, word) is not None) for word in words])
+
+def part2(words, rules):
+	regex = "^" + resolve_rule_b("0") + "$"
+	# print(regex)
+	return sum([int(re.match(regex, word) is not None) for word in words])
 
 words, rules = parse(data)
 pp.pprint(rules)
 
 print(part1(words, rules))
+print(part2(words, rules))
 
 # assert(match(regex, "ababbb") == True)
 # assert(match(regex, "abbbab") == True)
