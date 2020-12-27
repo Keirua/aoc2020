@@ -1,6 +1,7 @@
 import re
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
+from progress import progress
 
 sample_input = "389125467"
 real_input = "853192647"
@@ -108,8 +109,8 @@ class NodeList:
         nodelist = NodeList(data)
         print("allocated memory")
         for i in range(nb_steps):
-            if (i % 100_000) == 0:
-                print(100. * float(i) / nb_steps)
+            if i % 10000 == 0:
+                progress(i, nb_steps)
             nodelist.step()
 
         node1 = nodelist.search(1)
