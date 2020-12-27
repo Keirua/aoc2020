@@ -20,11 +20,14 @@ class NodeList:
         """Initializes the node from a list of data"""
         self.data = data
         self.nodes = []
+        self.mapping = {}
         l = len(data)
         self.mini = None
         self.maxi = None
         for d in data:
-            self.nodes.append(Node(d))
+            new_node = Node(d)
+            self.nodes.append(new_node)
+            self.mapping[d] = new_node
 
             if self.mini is None or d < self.mini:
                 self.mini = d
@@ -39,15 +42,18 @@ class NodeList:
     
     def search(self, value):
         """Search for a value, and returns the corresponding node"""
-        visited = []
-        curr = self.current
-        
-        while curr not in visited:
-            visited.append(curr)
-            if curr.value == value:
-                return curr
-            curr = curr.next
+        if value in self.mapping:
+            return self.mapping[value]
         return None
+        # visited = []
+        # curr = self.current
+        
+        # while curr not in visited:
+        #     visited.append(curr)
+        #     if curr.value == value:
+        #         return curr
+        #     curr = curr.next
+        # return None
 
     def all(self, start):
         visited = []
@@ -71,8 +77,8 @@ class NodeList:
         next3 = self.remove_next_3()
         target_value = self.current.value - 1
         destination = self.search(target_value)
-        
-        while destination is None or target_value in [next3[0].value, next3[1].value, next3[2].value]:
+        # print(next3)
+        while destination is None or destination in next3:
             target_value -= 1
             if target_value < self.mini:
                 target_value = self.maxi
@@ -102,8 +108,8 @@ class NodeList:
         nodelist = NodeList(data)
         print("allocated memory")
         for i in range(nb_steps):
-            if i % 1000:
-                print(i)
+            if (i % 100_000) == 0:
+                print(100. * float(i) / nb_steps)
             nodelist.step()
 
         node1 = nodelist.search(1)
