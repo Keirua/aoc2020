@@ -1,6 +1,7 @@
 My solutions to advent of code 2020, in Python
 
 Some of the cool problems with a reasonnably clean solutions, and/or where I have learnt something are:
+ - 1 using a hand rolled algo vs using itertools
  - 2 using a PEG − Parsing expression grammar. Thanks [Fasterthanlime](https://fasterthanli.me/series/advent-of-code-2020/part-2)
  - 7 The counting part was fun, it involves graph traversal using BFS and DFS
  - 8a (parsing and running a simple programming language). The first part is straightforward, the 2nd part does not add much
@@ -19,9 +20,13 @@ Some cool links:
  - [Advent of Code serie in rust](https://fasterthanli.me/series/advent-of-code-2020), by fasterthanlime. A great introduction to how experienced rustaceans think in the language.
  - [Visualization](https://www.reddit.com/r/adventofcode/comments/kcpdbi/2020_day_11_part_2luaroblox_waiting_room/) of the waiting room (day 11)
  - [Visualization](https://www.reddit.com/r/adventofcode/comments/kcw50x/day_7_all_the_bag_rules_in_full_colour/) of the bags (day 7)
- - Some [behind the scene](https://www.reddit.com/r/adventofcode/comments/k9lt09/postmortem_2_scaling_adventures/) details on the issues on the first days
+ - Some [behind the scene](https://www.reddit.com/r/adventofcode/comments/k9lt09/postmortem_2_scaling_adventures/) details on the issues on the first days, and about [how AoC works under the hood](https://www.youtube.com/watch?v=bS9882S0ZHs).
  - [Upping the ante](https://www.reddit.com/r/adventofcode/comments/kcybyr/2002_day_14_part_2_but_what_if_the_input_is_harder/) is a category where some extra constraints are added to the problems, like longer inputs that discards bruteforce or new rules
  - [Getting Crafty](https://www.reddit.com/r/adventofcode/wiki/gettincrafty) shows some very creative ideas.
  - [How To Leaderboard](https://blog.vero.site/post/advent-leaderboard), by Betaveros, the… leader of the leaderboard.
  - [tourist](https://www.youtube.com/watch?v=97tieEKfvBs) is one of the best competitive programmers. He streams CodeForce problems, and that's… another level entirely.
  - [cp-algorithms](https://cp-algorithms.com/) which provides A LOT of great information regarding algorithms used for competitive programming.
+
+Nice retrospectives:
+ - julia idiomatic solutions: https://blog.kdheepak.com/advent-of-code-2020-retrospective.html
+ - notes on AoC in Rust: https://explog.in/notes/aoc.html
