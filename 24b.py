@@ -60,7 +60,7 @@ def step(black):
 
 	for x,y in black:
 		c = neighbour_count(x,y, black)
-		if c == 0 or c == 2:
+		if c == 0 or c >= 2:
 			new_black.remove((x,y))
 	white = neighbours_of(black)
 	for x,y in white:
@@ -71,9 +71,8 @@ def step(black):
 	return new_black
 
 print(len(data))
-
 print(len(black))
 print(black)
-# for i in range(1, 100):
-# 	black = step(black)
-# 	print("day {} - {} ".format(i, len(black)))
+for i in range(1, 100+1):
+	black = step(black)
+	print("day {} - {} ".format(i, len(black)))
