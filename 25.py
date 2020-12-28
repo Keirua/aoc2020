@@ -1,3 +1,4 @@
+from functools import reduce
 # input for day 25
 card_pk, door_pk = [13135480, 8821721]
 
@@ -19,10 +20,12 @@ def find_secret_loop_size(target, subject_number):
     return loop
 
 def transform(subject_number, loop_size):
-    v = 1
-    for i in range(loop_size):
-        v = update(v, subject_number)
-    return v
+    return reduce(lambda v,_: update(v, subject_number), range(loop_size), 1)
+    # equivalent to:
+    # v = 1
+    # for i in range(loop_size):
+    #     v = update(v, subject_number)
+    # return v
 
 assert(find_secret_loop_size(5764801, 7) == 8)
 assert(find_secret_loop_size(17807724, 7) == 11)
