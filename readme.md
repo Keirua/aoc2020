@@ -26,6 +26,7 @@ Some cool links:
  - [How To Leaderboard](https://blog.vero.site/post/advent-leaderboard), by Betaveros, the… leader of the leaderboard.
  - [tourist](https://www.youtube.com/watch?v=97tieEKfvBs) is one of the best competitive programmers. He streams CodeForce problems, and that's… another level entirely.
  - [cp-algorithms](https://cp-algorithms.com/) which provides A LOT of great information regarding algorithms used for competitive programming.
+ - [ecnerwala](https://www.twitch.tv/videos/853264757), second on the leaderboard, speedrunning (!) the AoC problems for 2019.
 
 Nice retrospectives:
  - julia idiomatic solutions: https://blog.kdheepak.com/advent-of-code-2020-retrospective.html
